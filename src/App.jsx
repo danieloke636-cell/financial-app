@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -14,12 +14,23 @@ import AddTransaction from "./pages/AddTransaction";
 import Transactions from "./pages/Transactions";
 
 export default function App() {
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState(()=> {
+    const savedTransactions = localStorage.getItem("transactions")
+
+    if (savedTransactions) {
+      return JSON.parse(savedTransactions)
+    }
+    return []
+  });
 
 
   function addTransaction(transaction) {
     setTransactions((prevTransactions) => [...prevTransactions, transaction]);
   }
+
+  useEffect(()=> {
+    localStorage.setItem("transactions", JSON.stringify(transactions));},
+    [transactions])
   return (
     <BrowserRouter>
 
@@ -33,9 +44,9 @@ export default function App() {
           path="/"
           element={
             <>
-              <FinanceInfo />
+              <FinanceInfo transactions={transactions} />
               <FinanceChart />
-              <Savings />
+              <Savings transactions={transactions} />
               <RecentTransactions transactions={transactions} />
               <AddButton />
             </>

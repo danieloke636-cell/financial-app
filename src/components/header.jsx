@@ -1,4 +1,4 @@
-import DanielLogo from "../assets/react.svg";
+import DanielLogo from "../assets/logo.png";
 import calculator from "../assets/vite.svg";
 
 export default function Header() {

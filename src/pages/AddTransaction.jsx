@@ -3,13 +3,14 @@ import { useState } from "react";
 export default function AddTransaction({ addTransaction }) {
   const navigate = useNavigate();
   const [transaction, setTransaction] = useState({
-    key: crypto.randomUUID(),
+    id: crypto.randomUUID(),
     type: "expense",
     amount: "",
     description: "",
     category: "",
     date: "",
     paymentMethod: "",
+    savingsGoal: "",
   });
 
   function handleAddTransaction() {
@@ -134,6 +135,17 @@ export default function AddTransaction({ addTransaction }) {
             <option value="wallet">Digital Wallet</option>
           </select>
         </div>
+
+        { transaction.type === "savings" && (<div className="form-section">
+          <label htmlFor="savingsGoal">Savings Goal</label>
+
+                    <div className="amount-input">
+            <span>₦</span>
+            
+
+          <input type="number" id="savingsGoal" placeholder="200,000" value={transaction.savingsGoal} onChange={(e)=> setTransaction({...transaction, savingsGoal:e.target.value})} />
+        </div>
+        </div>)}
 
         {/* Submit */}
 

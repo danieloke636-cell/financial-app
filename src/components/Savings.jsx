@@ -1,34 +1,71 @@
-export default function Savings() {
+export default function Savings({ transactions }) {
+
+  let totalSavings = 0;
+  let savingsGoal = 0;
+
+  for (let transaction of transactions) {
+
+    if (transaction.type === "savings") {
+      totalSavings += Number(transaction.amount);
+      savingsGoal = Number(transaction.savingsGoal)
+    }
+  }
+
+
+  let savingsPercentage = (totalSavings / savingsGoal) * 100;
+
+
   return (
     <section className="savings">
 
       <div className="savings-header">
+
         <div>
           <p>Savings</p>
-          <h2>₦120,000</h2>
+
+          <h2>
+            ₦{totalSavings.toLocaleString()}
+          </h2>
         </div>
 
         <span className="savings-status">
-          On Track
+          {savingsPercentage >= 100
+            ? "Goal Achieved"
+            : savingsPercentage >= 40
+            ? "Making Progress"
+            : "Behind Schedule"}
         </span>
+
       </div>
+
 
       <div className="savings-progress">
 
         <div className="progress-labels">
-          <span>Current Savings</span>
-          <span>₦200,000 Goal</span>
+
+          <span>
+            Current Savings
+          </span>
+
+          <span>
+            ₦{savingsGoal.toLocaleString()} Goal
+          </span>
+
         </div>
+
 
         <div className="progress-bar">
+
           <div
             className="progress"
-            style={{ width: "60%" }}
+            style={{ width: `${savingsPercentage}%` }}
           ></div>
+
         </div>
 
+
         <p className="progress-percentage">
-          60% of your savings goal
+          {savingsPercentage}% of your savings goal
         </p>
 
       </div>
@@ -36,3 +73,4 @@ export default function Savings() {
     </section>
   );
 }
+

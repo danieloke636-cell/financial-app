@@ -1,4 +1,27 @@
-export default function FinanceInfo() {
+import { useState } from "react"
+export default function FinanceInfo({transactions}) {
+
+  const [visible, setVisible] = useState(true)
+
+  let income = 0;
+  let expense = 0;
+  let saving = 0;
+
+  for (let transaction of transactions) {
+    if (transaction.type === "income") {
+      income += Number(transaction.amount);
+    } else if (transaction.type === "expense") {
+      expense += Number(transaction.amount);
+    } else if (transaction.type === "savings") {
+      saving += Number(transaction.amount);
+    }
+  }
+
+  let balance = income - expense - saving;
+
+  function handleVisibility (){
+    setVisible(!visible)
+  }
   return (
     <section className="finance-info">
 
@@ -11,6 +34,7 @@ export default function FinanceInfo() {
           className="visibility-button"
           type="button"
           aria-label="Hide financial information"
+          onClick={handleVisibility}
         >
           👁
         </button>
@@ -18,24 +42,24 @@ export default function FinanceInfo() {
 
       <div className="balance">
         <p>Total Balance</p>
-        <h2>₦250,000.00</h2>
+        <h2>{visible ? `₦${ balance.toLocaleString() }` : "......."}</h2>
       </div>
 
       <div className="finance-summary">
 
         <div>
           <p>Income</p>
-          <strong className="income">₦500,000</strong>
+          <strong className="income">{visible ? `₦${income.toLocaleString()}` : "......"}</strong>
         </div>
 
         <div>
           <p>Expenses</p>
-          <strong className="expense">₦180,000</strong>
+          <strong className="expense">{visible ? `₦${expense.toLocaleString()}` : "......"}</strong>
         </div>
 
         <div>
           <p>Savings</p>
-          <strong className="saving">₦120,000</strong>
+          <strong className="saving">{visible ? `₦${saving.toLocaleString()}` : "......"}</strong>
         </div>
 
       </div>
